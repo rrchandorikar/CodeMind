@@ -5,7 +5,8 @@ pipeline {
         stage('Hello') {
             steps {
                 echo 'Hello World'
-                sh 'rm -rf pipelinetest'
+                sh 'mkdir pipelinetest'
+                sh 'cp pipelinetest /home/ubuntu/CICD/'
             }
         }
         stage('Git Code Checkout'){
