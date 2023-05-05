@@ -6,7 +6,7 @@ pipeline {
             steps {
                 echo 'Hello World'
                 sh 'mkdir pipelinetest'
-                sh 'cp pipelinetest /tmp/'
+                sh 'cp -r pipelinetest /tmp/'
             }
         }
         stage('Git Code Checkout'){
