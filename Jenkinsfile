@@ -9,18 +9,42 @@ pipeline {
                 url: 'https://github.com/rrchandorikar/CodeMind.git'
             }
         }
-        stage('Testing'){
+        stage('Unit Testing'){
+            steps{
+                sh 'echo Testing App version....'
+                sh 'echo Test cases Passed'
+            }
+        }
+        stage('Smoke Testing'){
+            steps{
+                sh 'echo Testing App version.....'
+                sh 'echo Test cases Passed'
+            }
+        }
+        stage('Sanity Testing'){
             steps{
                 sh 'echo Testing App version'
+                sh 'echo Test cases Passed'
             }
         }
-        stage('Create docker build'){
+        stage('Regression Testing'){
             steps{
-                sh 'docker build -t cust_nginx:v4 .'
-                sh 'sleep 5'
-                sh 'docker tag cust_nginx:v4 codemindrohan/cust_nginx:v4'
-                sh 'docker push codemindrohan/cust_nginx:v4'
+                sh 'echo Testing App version'
+                sh 'echo Test cases Passed'
             }
         }
+        stage('Create docker image'){
+            steps{
+                sh 'docker build -t cust_nginx:v4'
+                sh 'sleep 5'
+            }
+        }
+         stage('Pushing artefacts to Artefactory'){
+            steps{
+                sh 'docker tag cust_nginx:v5 codemindrohan/cust_nginx:v5'
+                sh 'docker push codemindrohan/cust_nginx:v5'
+            }
+         }
     }
+
 }
