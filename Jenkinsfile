@@ -35,7 +35,7 @@ pipeline {
         }
         stage('Create docker image'){
             steps{
-                sh 'docker build -t cust_nginx:v4'
+                sh 'docker build -t cust_nginx:v5'
                 sh 'sleep 5'
             }
         }
