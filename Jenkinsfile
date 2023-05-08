@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Create docker build'){
             steps{
-                sh 'docker build -t cust_nginx:v4'
+                sh 'docker build -t cust_nginx:v4 .'
                 sh 'sleep 5'
                 sh 'docker tag cust_nginx:v4 codemindrohan/cust_nginx:v4'
                 sh 'docker push codemindrohan/cust_nginx:v4'
