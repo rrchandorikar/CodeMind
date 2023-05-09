@@ -1,7 +1,7 @@
 version: '3'
 services:
   app_1:
-    image: codemindrohan/cust_nginx:v6
+    image: codemindrohan/cust_nginx:v7
     ports:
     - "81:80"
     deploy:
