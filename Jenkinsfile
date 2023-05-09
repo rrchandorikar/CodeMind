@@ -35,20 +35,20 @@ pipeline {
         }
         stage('Create docker image'){
             steps{
-                sh 'docker build -t cust_nginx:v5 .'
+                sh 'docker build -t cust_nginx:v6 .'
                 sh 'sleep 5'
             }
         }
          stage('Pushing artefacts to Artefactory'){
             steps{
-                sh 'docker tag cust_nginx:v5 codemindrohan/cust_nginx:v5'
-                sh 'docker push codemindrohan/cust_nginx:v5'
+                sh 'docker tag cust_nginx:v5 codemindrohan/cust_nginx:v6'
+                sh 'docker push codemindrohan/cust_nginx:v6'
                 sh 'sleep 5'
             }
          }
         stage('Deploying Application'){
             steps{
-                sh 'docker stack deploy -c docker-compose.yml web --orchetrator swarm'
+                sh 'docker stack deploy -c docker-compose.yml web --orchestrator swarm'
             }
          }
     }
