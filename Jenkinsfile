@@ -35,14 +35,14 @@ pipeline {
         }
         stage('Create docker image'){
             steps{
-                sh 'docker build -t cust_nginx:v8 .'
+                sh 'docker build -t cust_nginx:v9 .'
                 sh 'sleep 5'
             }
         }
          stage('Pushing artefacts to Artefactory'){
             steps{
-                sh 'docker tag cust_nginx:v8 codemindrohan/cust_nginx:v8'
-                sh 'docker push codemindrohan/cust_nginx:v8'
+                sh 'docker tag cust_nginx:v9 codemindrohan/cust_nginx:v9'
+                sh 'docker push codemindrohan/cust_nginx:v9'
                 sh 'sleep 5'
             }
          }
