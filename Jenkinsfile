@@ -43,8 +43,15 @@ pipeline {
             steps{
                 sh 'docker tag cust_nginx:v5 codemindrohan/cust_nginx:v5'
                 sh 'docker push codemindrohan/cust_nginx:v5'
+                sh 'sleep 5'
+            }
+         }
+        stage('Deploying Application'){
+            steps{
+                sh 'docker stack deploy -c docker-compose.yml web --orchetrator swarm'
             }
          }
     }
 
 }
+
