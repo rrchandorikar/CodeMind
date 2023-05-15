@@ -31,7 +31,7 @@ pipeline {
             steps{
                 sh 'docker pull codemindrohan/cust_nginx:${BUILD_NUMBER}'
                 sh 'sleep 8'
-                sh 'docker run -d --name app_1 -p 81:80 cust_nginx:${BUILD_NUMBER}'
+                sh 'docker run -d --name app_1 -p 81:80 codemindrohan/cust_nginx:${BUILD_NUMBER}'
                 sh 'sleep 5'
                 sh 'echo Testing App version....'
                 sh 'sleep 5'
@@ -45,7 +45,7 @@ pipeline {
                 }
             }
             steps{
-                sh 'docker run -d --name app_1 -p 82:80 cust_nginx:${BUILD_NUMBER}'
+                sh 'docker run -d --name app_1 -p 82:80 codemindrohan/cust_nginx:${BUILD_NUMBER}'
             }
          }
     }
