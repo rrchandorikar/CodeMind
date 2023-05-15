@@ -15,7 +15,7 @@ pipeline {
                 sh 'sleep 5'
             }
         }
-         stage('Pushing artefacts to Artefactory'){
+         stage('Pushing artefacts to Artefactory..............'){
             steps{
                 sh 'docker tag cust_nginx:${BUILD_NUMBER} codemindrohan/cust_nginx:${BUILD_NUMBER}'
                 sh 'docker push codemindrohan/cust_nginx:${BUILD_NUMBER}'
@@ -45,6 +45,8 @@ pipeline {
                 }
             }
             steps{
+                sh 'docker pull codemindrohan/cust_nginx:${BUILD_NUMBER}'
+                sh 'sleep 5'
                 sh 'docker run -d --name app_1 -p 82:80 codemindrohan/cust_nginx:${BUILD_NUMBER}'
             }
          }
