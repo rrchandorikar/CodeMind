@@ -41,7 +41,7 @@ pipeline {
         stage('CLIENT PROD DEPLOYMENT........'){
             agent{
                 node{
-                    label 'clinet'
+                    label 'client'
                 }
             }
             steps{
