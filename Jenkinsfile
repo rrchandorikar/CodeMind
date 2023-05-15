@@ -9,49 +9,65 @@ pipeline {
                 url: 'https://github.com/rrchandorikar/CodeMind.git'
             }
         }
-        stage('Unit Testing'){
+        stage('Building......'){
             steps{
-                sh 'echo Testing App version....'
-                sh 'echo Test cases Passed'
-            }
-        }
-        stage('Smoke Testing'){
-            steps{
-                sh 'echo Testing App version.....'
-                sh 'echo Test cases Passed'
-            }
-        }
-        stage('Sanity Testing'){
-            steps{
-                sh 'echo Testing App version'
-                sh 'echo Test cases Passed'
-            }
-        }
-        stage('Regression Testing'){
-            steps{
-                sh 'echo Testing App version'
-                sh 'echo Test cases Passed'
-            }
-        }
-        stage('Create docker image'){
-            steps{
-                sh 'docker build -t cust_nginx:v9 .'
+                sh 'docker build -t cust_nginx:${BUILD_NUMBER} .'
                 sh 'sleep 5'
             }
         }
          stage('Pushing artefacts to Artefactory'){
             steps{
-                sh 'docker tag cust_nginx:v9 codemindrohan/cust_nginx:v9'
-                sh 'docker push codemindrohan/cust_nginx:v9'
+                sh 'docker tag cust_nginx:${BUILD_NUMBER} codemindrohan/cust_nginx:${BUILD_NUMBER}'
+                sh 'docker push codemindrohan/cust_nginx:${BUILD_NUMBER}'
                 sh 'sleep 5'
             }
          }
-        stage('Deploying Application'){
+        stage('Testing.......'){
+            agent{
+                node{
+                    label 'staging'
+                }
+            }
             steps{
-                sh 'docker stack deploy -c docker-compose.yml web --orchestrator swarm'
+                sh 'docker pull codemindrohan/cust_nginx:${BUILD_NUMBER}'
+                sh 'sleep 8'
+                sh 'docker run -d --name app_1 -p 81:80 cust_nginx:${BUILD_NUMBER}'
+                sh 'sleep 5'
+                sh 'echo Testing App version....'
+                sh 'sleep 5'
+                sh 'echo Test cases Passed'
+            }
+        }
+        stage('CLIENT PROD DEPLOYMENT........'){
+            agent{
+                node{
+                    label 'clinet'
+                }
+            }
+            steps{
+                sh 'docker run -d --name app_1 -p 82:80 cust_nginx:${BUILD_NUMBER}'
             }
          }
     }
-
+    post {
+     aborted {
+         echo "Sending Slack notification"
+         slackSend (color: '#FFC300', 
+         message: "*ABORTED:*\n Job: ${env.JOB_NAME}\n Build Number: ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}")
+         
+     }
+     
+     failure {
+         echo "Sending Slack notification"
+         slackSend (color: '#E01563',
+         message: "*FAILED:*\n Job: ${env.JOB_NAME}\n Build Number: ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}")
+     }
+     
+     success {
+         echo "Sending Slack notification"
+         slackSend (color: '#3EB991',
+         message: "*SUCCESS:*\n Job: ${env.JOB_NAME}\n Build Number: ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}")
+     }
+  }
 }
 
